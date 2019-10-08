@@ -44,7 +44,7 @@ public class DemoApplication {
                                                .get()
                                                .uri("http://localhost:{port}/hello", port)
                                                .exchange()
-                                               .flatMap(clientResponse -> Mono.just("Hello World: " + clientResponse.rawStatusCode()));
+                                               .flatMap(clientResponse -> clientResponse.bodyToMono(Void.class).then(Mono.just("Hello World: " + clientResponse.rawStatusCode())));
 			return ServerResponse.ok().contentType(TEXT_PLAIN).body(result, String.class);
 		});
 	}
